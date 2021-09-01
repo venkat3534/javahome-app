@@ -1,0 +1,26 @@
+---
+- hosts: all
+  become: True
+  tasks:
+   - name: install apache2
+     yum:
+      name: httpd
+      state: present
+      update_cache: yes
+   - name: Enable apache on reboot
+     service:
+      name: httpd
+      enabled: True
+   - name: install git
+     yum:
+      name: git
+      state: present
+   - name: deploy website from git
+     git:
+      repo: https://github.com/venkat3534/javahome-app.git
+      dest: /var/www/html
+   - name: restart apache
+     service:
+      name: httpd
+      state: restarted
+...
